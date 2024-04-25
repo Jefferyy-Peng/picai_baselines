@@ -229,7 +229,7 @@ class MultiThreadedAugmenter(object):
             if hasattr(self.generator, 'was_initialized'):
                 self.generator.was_initialized = False
 
-            with threadpool_limits(limits=1, user_api="blas"):
+            with threadpool_limits(limits=2, user_api="blas"):
                 for i in range(self.num_processes):
                     self._queues.append(Queue(self.num_cached_per_queue))
                     self._processes.append(Process(target=producer, args=(

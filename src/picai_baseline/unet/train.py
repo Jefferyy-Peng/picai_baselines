@@ -36,21 +36,21 @@ def main():
     parser = argparse.ArgumentParser(description='Command Line Arguments for Training Script')
 
     # data I/0 + experimental setup
-    parser.add_argument('--max_threads', type=int, default=12,
+    parser.add_argument('--max_threads', type=int, default=4,
                         help="Max threads/workers for data loaders")
-    parser.add_argument('--validate_n_epochs', type=int, default=10,               
+    parser.add_argument('--validate_n_epochs', type=int, default=1,
                         help="Trigger validation every N epochs")
-    parser.add_argument('--validate_min_epoch', type=int, default=50,               
+    parser.add_argument('--validate_min_epoch', type=int, default=0,
                         help="Trigger validation after minimum N epochs")
     parser.add_argument('--export_best_model', type=int, default=1,                
                         help="Export model checkpoints")
     parser.add_argument('--resume_training', type=str, default=1,                
                         help="Resume training model, if checkpoint exists")
-    parser.add_argument('--weights_dir', type=str, required=True,            
+    parser.add_argument('--weights_dir', type=str, default='./workdir/results/UNet/weights/',
                         help="Path to export model checkpoints")
-    parser.add_argument('--overviews_dir', type=str, required=True,            
+    parser.add_argument('--overviews_dir', type=str, default='./workdir/results/UNet/overviews/Task2201_picai_baseline',
                         help="Base path to training/validation data sheets")
-    parser.add_argument('--folds', type=int, nargs='+', required=True, 
+    parser.add_argument('--folds', type=int, nargs='+', default=[0,1,2,3,4],
                         help="Folds selected for training/validation run")
 
     # training hyperparameters
@@ -60,7 +60,7 @@ def main():
                         help="Number of input channels/sequences")
     parser.add_argument('--num_classes', type=int, default=2,                
                         help="Number of classes at train-time")
-    parser.add_argument('--num_epochs', type=int, default=100,              
+    parser.add_argument('--num_epochs', type=int, default=250,
                         help="Number of training epochs")
     parser.add_argument('--base_lr', type=float, default=0.001,            
                         help="Learning rate")
@@ -106,7 +106,7 @@ def main():
         )
         
         # initialize multi-threaded augmenter in background
-        train_gen.restart()
+        # train_gen.restart()
 
         # model definition
         model = neural_network_for_run(args=args, device=device)
@@ -123,8 +123,10 @@ def main():
             model=model, optimizer=optimizer,
             device=device, args=args, fold_id=f
         )
-
+        patience = 20
         # for each epoch
+        q = 0
+        best_score  = 0
         for epoch in range(tracking_metrics['start_epoch'], args.num_epochs):
 
             # optimize model x N training steps + update learning rate
@@ -148,6 +150,15 @@ def main():
                         model=model, optimizer=optimizer, valid_gen=valid_gen, args=args,
                         tracking_metrics=tracking_metrics, device=device, writer=writer
                     )
+
+            if tracking_metrics['best_metric'] > best_score:
+                best_score = tracking_metrics['best_metric']
+                q = 0
+            else:
+                q += 1
+            print(f'patience: {q}')
+            if q == patience:
+                break
 
         # --------------------------------------------------------------------------------------------------------------------------
         print(

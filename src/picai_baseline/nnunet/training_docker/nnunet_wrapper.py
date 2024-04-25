@@ -154,7 +154,7 @@ def prepare(argv):
         })
 
     # Create metadata file
-    print('[#] Writing metadata to dataset.json')
+    print('[#] Writing metadata to dataset1.json')
 
     name = args.task.split('_', 1)[1]
     labels = OrderedDict([(str(i), label) for i, label in enumerate(args.labels)])
@@ -171,7 +171,7 @@ def prepare(argv):
         ('training', training),
         ('test', [])
     ])
-    write_json(taskdir / 'dataset.json', metadata, make_dirs=False)
+    write_json(taskdir / 'dataset1.json', metadata, make_dirs=False)
 
 
 def plan_train(argv):

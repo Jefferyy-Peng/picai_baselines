@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Union
 
 import numpy as np
+import pickle
 import SimpleITK as sitk
 
 from picai_baseline.splits.picai import nnunet_splits as picai_pub_splits
@@ -38,12 +39,15 @@ def main(
 
     if isinstance(splits, str):
         # select splits
-        splits = {
-            "picai_pub": picai_pub_splits,
-            "picai_pubpriv": picai_pubpriv_splits,
-            "picai_pub_nnunet": picai_pub_nnunet_splits,
-            "picai_pubpriv_nnunet": picai_pubpriv_nnunet_splits,
-        }[args.splits]
+        if args.splits == 'picai_human':
+            splits = pickle.load(open('./src/picai_baseline/splits/picai_human/splits.p', 'rb'))
+        else:
+            splits = {
+                "picai_pub": picai_pub_splits,
+                "picai_pubpriv": picai_pubpriv_splits,
+                "picai_pub_nnunet": picai_pub_nnunet_splits,
+                "picai_pubpriv_nnunet": picai_pubpriv_nnunet_splits,
+            }[args.splits]
 
     if splits is None:
         raise ValueError("No splits provided!")
@@ -100,13 +104,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Command Line Arguments')
     parser.add_argument("--task", type=str, default="Task2201_picai_baseline",
                         help="Task name of the experiment. Default: Task2201_picai_baseline")
-    parser.add_argument("--workdir", type=str, default="/workdir",
+    parser.add_argument("--workdir", type=str, default="./workdir",
                         help="Path to the workdir where 'results' and 'nnUNet_raw_data' are stored. Default: /workdir")
-    parser.add_argument("--preprocessed_data_path", type=str, default="nnUNet_raw_data/{task}",
+    parser.add_argument("--preprocessed_data_path", type=str, default="./nnUNet_raw_data/{task}",
                         help="Path to the preprocessed data, relative to the workdir. Default: /workdir/nnUNet_raw_data/{task}")
-    parser.add_argument("--overviews_path", type=str, default="results/UNet/overviews/{task}",
+    parser.add_argument("--overviews_path", type=str, default="./results/UNet/overviews/{task}",
                         help="Path to the overviews, relative to the workdir. Default: /workdir/results/UNet/overviews/{task}")
-    parser.add_argument("--splits", type=str, default="picai_pub_nnunet",
+    parser.add_argument("--splits", type=str, default="picai_human",
                         help="Splits for cross-validation. Available: picai_pub, picai_pub_nnunet, picai_pubpriv, " +
                              "picai_pubpriv_nnunet.")
     args = parser.parse_args()

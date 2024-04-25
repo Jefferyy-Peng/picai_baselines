@@ -169,9 +169,9 @@ def prepare_data(
 if __name__ == "__main__":
     # parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--workdir", type=str, default=os.environ.get("workdir", "/workdir"),
+    parser.add_argument("--workdir", type=str, default=os.environ.get("workdir", "./workdir"),
                         help="Path to the working directory (default: /workdir, or the environment variable 'workdir')")
-    parser.add_argument("--inputdir", type=str, default=os.environ.get("inputdir", "/input"),
+    parser.add_argument("--inputdir", type=str, default=os.environ.get("inputdir", "./input"),
                         help="Path to the input dataset (default: /input, or the environment variable 'inputdir')")
     parser.add_argument("--imagesdir", type=str, default="images",
                         help="Path to the images, relative to --inputdir (default: /input/images)")
@@ -190,6 +190,7 @@ if __name__ == "__main__":
                         help="Task name (default: Task2201_picai_baseline)")
     try:
         args = parser.parse_args()
+        args.matrix_size = [32, 640, 640]
     except Exception as e:
         print(f"Parsing all arguments failed: {e}")
         print("Retrying with only the known arguments...")

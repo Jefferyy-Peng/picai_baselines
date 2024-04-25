@@ -144,7 +144,7 @@ To deploy your own nnDetection algorithm, the trained models need to be transfer
 As well as:
 
 ```bash
-~/workdir/nnDet_raw_data/Task2201_picai_baseline/dataset.json
+~/workdir/nnDet_raw_data/Task2201_picai_baseline/dataset1.json
 ```
 
 
@@ -159,7 +159,7 @@ cp /path/to/workdir/results/nnDet/Task2201_picai_baseline/RetinaUNetV001_D3V001_
 cp /path/to/workdir/results/nnDet/Task2201_picai_baseline/RetinaUNetV001_D3V001_3d/consolidated/model_fold3.ckpt /path/to/repos/picai_nndetection_gc_algorithm/results/nnDet/Task2201_picai_baseline/RetinaUNetV001_D3V001_3d/consolidated/model_fold3.ckpt
 cp /path/to/workdir/results/nnDet/Task2201_picai_baseline/RetinaUNetV001_D3V001_3d/consolidated/model_fold4.ckpt /path/to/repos/picai_nndetection_gc_algorithm/results/nnDet/Task2201_picai_baseline/RetinaUNetV001_D3V001_3d/consolidated/model_fold4.ckpt
 cp /path/to/workdir/results/nnDet/Task2201_picai_baseline/RetinaUNetV001_D3V001_3d/consolidated/plan_inference.pkl /path/to/repos/picai_nndetection_gc_algorithm/results/nnDet/Task2201_picai_baseline/RetinaUNetV001_D3V001_3d/consolidated/plan_inference.pkl
-cp /path/to/workdir/nnDet_raw_data/Task2201_picai_baseline/dataset.json /path/to/repos/picai_nndetection_gc_algorithm/results/nnDet/Task2201_picai_baseline/dataset.json
+cp /path/to/workdir/nnDet_raw_data/Task2201_picai_baseline/dataset1.json /path/to/repos/picai_nndetection_gc_algorithm/results/nnDet/Task2201_picai_baseline/dataset1.json
 ```
 
 After collecting these files, please continue with the instructions provided in [Submission of Inference Containers to the Open Development Phase](https://pi-cai.grand-challenge.org/ai-algorithm-submissions/).

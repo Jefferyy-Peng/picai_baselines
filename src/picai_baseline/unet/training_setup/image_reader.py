@@ -106,10 +106,10 @@ class SimpleITKDataset(Dataset, Randomizable):
 
         # apply the transforms
         if self.transform is not None:
-            img = apply_transform(self.transform, img, map_items=False)
+            img = apply_transform(self.transform, img.squeeze(0), map_items=False).unsqueeze(0)
 
         if self.seg_transform is not None:
-            seg = apply_transform(self.seg_transform, seg, map_items=False)
+            seg = apply_transform(self.seg_transform, seg.squeeze(0), map_items=False).unsqueeze(0)
 
         if self.labels is not None:
             label = self.labels[index]

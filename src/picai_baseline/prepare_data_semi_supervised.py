@@ -55,8 +55,8 @@ def preprocess_picai_annotation(lbl: sitk.Image) -> sitk.Image:
 
 
 def prepare_data_semi_supervised(
-    workdir: Union[Path, str] = "/workdir",
-    inputdir: Union[Path, str] = "/input",
+    workdir: Union[Path, str] = "./workdir",
+    inputdir: Union[Path, str] = "./input",
     imagesdir: str = "images",
     labelsdir: str = "picai_labels",
     spacing: Optional[Iterable[float]] = None,
@@ -116,7 +116,7 @@ def prepare_data_semi_supervised(
     mha2nnunet_settings_path = workdir / "mha2nnunet_settings" / (task + ".json")
     nnUNet_raw_data_path = workdir / "nnUNet_raw_data"
     nnUNet_task_dir = nnUNet_raw_data_path / task
-    nnUNet_dataset_json_path = nnUNet_task_dir / "dataset.json"
+    nnUNet_dataset_json_path = nnUNet_task_dir / "dataset1.json"
     nnUNet_splits_path = nnUNet_task_dir / "splits.json"
 
     # prepare annotations folder with human-expert and AI-derived annotations
@@ -164,7 +164,7 @@ def prepare_data_semi_supervised(
 
 
     if nnUNet_dataset_json_path.exists():
-        print(f"Found dataset.json at {nnUNet_dataset_json_path}, skipping..")
+        print(f"Found dataset1.json at {nnUNet_dataset_json_path}, skipping..")
     else:
         # read preprocessing settings and set the annotation preprocessing function
         with open(mha2nnunet_settings_path) as fp:
@@ -196,9 +196,9 @@ def prepare_data_semi_supervised(
 if __name__ == "__main__":
     # parse command line arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--workdir", type=str, default=os.environ.get("workdir", "/workdir"),
+    parser.add_argument("--workdir", type=str, default=os.environ.get("workdir", "./workdir"),
                         help="Path to the working directory (default: /workdir, or the environment variable 'workdir')")
-    parser.add_argument("--inputdir", type=str, default=os.environ.get("inputdir", "/input"),
+    parser.add_argument("--inputdir", type=str, default=os.environ.get("inputdir", "./input"),
                         help="Path to the input dataset (default: /input, or the environment variable 'inputdir')")
     parser.add_argument("--imagesdir", type=str, default="images",
                         help="Path to the images, relative to --inputdir (default: /input/images)")

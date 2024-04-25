@@ -86,7 +86,7 @@ def copy_preprocessed_data_to_compute_node(task: str, remote_data_dir: Pathlike,
         # Copy preprocessed data to compute node
         print('[#] Copying plans and preprocessed data from storage server to compute node')
         local_task_dir.mkdir(parents=True, exist_ok=True)
-        shutil_sol.copyfile(remote_task_dir / "dataset.json", local_task_dir / "dataset.json")
+        shutil_sol.copyfile(remote_task_dir / "dataset1.json", local_task_dir / "dataset1.json")
         shutil_sol.copytree(remote_task_dir / 'preprocessed', local_task_dir / 'preprocessed')
 
     # Replace split with custom split?
@@ -264,13 +264,13 @@ def nndet_predict(argv):
         # predictions exist at temporary prediction directory, but resuming is not enabled
         raise ValueError("Intermediate prediction folder is not empty. Use --resume to allow resuming inference.")
 
-    print("[#] Copying dataset.json and raw cases to local compute node for inference")
-    # copy dataset.json
+    print("[#] Copying dataset1.json and raw cases to local compute node for inference")
+    # copy dataset1.json
     local_task_dir = Path(os.environ['det_data']) / args.task
     local_task_dir.mkdir(parents=True, exist_ok=True)
     shutil_sol.copyfile(
-        src=Path(args.workdir) / "nnDet_raw_data" / args.task / "dataset.json",
-        dst=local_task_dir / "dataset.json"
+        src=Path(args.workdir) / "nnDet_raw_data" / args.task / "dataset1.json",
+        dst=local_task_dir / "dataset1.json"
     )
 
     # copy raw cases
@@ -318,7 +318,7 @@ def nndet_consolidate(argv):
     os.environ['det_models'] = args.results
 
     # we require preprocessed data for nndet sweep/consolitate
-    if not os.path.exists(Path(os.environ['det_data']) / args.task / "dataset.json"):
+    if not os.path.exists(Path(os.environ['det_data']) / args.task / "dataset1.json"):
         copy_preprocessed_data_to_compute_node(
             task=args.task,
             remote_data_dir=Path(args.workdir) / "nnDet_raw_data",

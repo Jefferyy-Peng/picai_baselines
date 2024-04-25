@@ -20,7 +20,7 @@ import monai
 import numpy as np
 import torch
 from batchgenerators.dataloading.data_loader import DataLoader
-from monai.transforms import Compose, EnsureType
+from monai.transforms import Compose, EnsureType, Resize
 
 from picai_baseline.unet.training_setup.image_reader import SimpleITKDataset
 
@@ -99,7 +99,7 @@ def prepare_datagens(args, fold_id):
     print(f'Validation Samples [-:{class_ratio_v[1]};+:{class_ratio_v[0]}]: {len(valid_data[1])}')
 
     # dummy dataloader for sanity check
-    pretx = [EnsureType()]
+    pretx = [EnsureType(), Resize(spatial_size=args.image_shape)]
     check_ds = SimpleITKDataset(image_files=train_data[0][:args.batch_size*2],
                                 seg_files=train_data[1][:args.batch_size*2],
                                 transform=Compose(pretx),

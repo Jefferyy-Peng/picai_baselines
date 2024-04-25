@@ -127,8 +127,8 @@ def main(taskname="Task2203_picai_baseline"):
         consolidated_model_dir / "plan_inference.pkl",
     )
     shutil.copy(
-        workdir / f"nnDet_raw_data/{taskname}/dataset.json",
-        output_task_dir / "dataset.json",
+        workdir / f"nnDet_raw_data/{taskname}/dataset1.json",
+        output_task_dir / "dataset1.json",
     )
 
 if __name__ == '__main__':
